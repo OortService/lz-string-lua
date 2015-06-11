@@ -1,0 +1,6 @@
+[submodule "luabit"]
+	path = luabit
+	url = https://github.com/alexsilva/luabit-legacy.git
+[submodule "lua_utf8"]
+	path = lua_utf8
+	url = https://github.com/alexsilva/lua_utf8.git
