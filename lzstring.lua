@@ -1,4 +1,3 @@
-dofile(ROOT_DIR..'/luabit/bit.lua')
 utf8 = dofile(ROOT_DIR..'/lua_utf8/utf8.lua')
 
 function charAt(str, index)
@@ -42,10 +41,10 @@ function decompress(compressed)
 
     while power ~= maxpower do
         -- resb = data_val & data_position
-        resb = bit.band(data_val, data_position)
+        resb = band(data_val, data_position)
 
         -- data_position = >>= 1
-        data_position = bit.blogic_rshift(data_position, 1)
+        data_position = brshift(data_position, 1)
 
         if data_position == 0 then
             data_position = 32768
@@ -57,10 +56,10 @@ function decompress(compressed)
         else
             resb_bor = 0 * power
         end
-        bits = bit.bor(bits, resb_bor)
+        bits = bor(bits, resb_bor)
 
         -- power <<= 1
-        power = bit.blshift(power, 1)
+        power = blshift(power, 1)
     end
 
     nnext = bits
@@ -72,10 +71,10 @@ function decompress(compressed)
 
         while power ~= maxpower do
             -- resb = data_val & data_position
-            resb = bit.band(data_val, data_position)
+            resb = band(data_val, data_position)
 
             -- data_position >>= 1
-            data_position = bit.blogic_rshift(data_position, 1)
+            data_position = brshift(data_position, 1)
 
             if data_position == 0 then
                 data_position = 32768
@@ -88,10 +87,10 @@ function decompress(compressed)
             else
                 resb_bor = 0 * power
             end
-            bits = bit.bor(bits, resb_bor)
+            bits = bor(bits, resb_bor)
 
             -- power <<= 1
-            power = bit.blshift(power, 1)
+            power = blshift(power, 1)
         end
 
         --c = six.unichr(bits)
@@ -104,10 +103,10 @@ function decompress(compressed)
 
         while power ~= maxpower do
             -- resb = data_val & data_position
-            resb = bit.band(data_val, data_position)
+            resb = band(data_val, data_position)
 
             -- data_position >>= 1
-            data_position = bit.blogic_rshift(data_position, 1)
+            data_position = brshift(data_position, 1)
 
             if data_position == 0 then
                 data_position = 32768
@@ -119,10 +118,10 @@ function decompress(compressed)
             else
                 resb_bor = 0 * power
             end
-            bits = bit.bor(bits, resb_bor)
+            bits = bor(bits, resb_bor)
 
             -- power <<= 1
-            power = bit.blshift(power, 1)
+            power = blshift(power, 1)
         end
 
         -- c = six.unichr(bits)
@@ -146,10 +145,10 @@ function decompress(compressed)
 
         while power ~= maxpower do
             -- resb = data_val & data_position
-            resb = bit.band(data_val, data_position)
+            resb = band(data_val, data_position)
 
             -- data_position >>= 1
-            data_position = bit.blogic_rshift(data_position, 1)
+            data_position = brshift(data_position, 1)
 
             if data_position == 0 then
                 data_position = 32768
@@ -162,10 +161,10 @@ function decompress(compressed)
             else
                 resb_bor = 0 * power
             end
-            bits = bit.bor(bits, resb_bor)
+            bits = bor(bits, resb_bor)
 
             -- power <<= 1
-            power = bit.blshift(power, 1)
+            power = blshift(power, 1)
         end
 
         c = bits
@@ -177,10 +176,10 @@ function decompress(compressed)
 
             while power ~= maxpower do
                 -- resb = data_val & data_position
-                resb = bit.band(data_val, data_position)
+                resb = band(data_val, data_position)
 
                 -- data_position >>= 1
-                data_position = bit.blogic_rshift(data_position, 1)
+                data_position = brshift(data_position, 1)
 
                 if data_position == 0 then
                     data_position = 32768
@@ -192,10 +191,10 @@ function decompress(compressed)
                 else
                     resb_bor = 0 * power
                 end
-                bits = bit.bor(bits, resb_bor)
+                bits = bor(bits, resb_bor)
 
                 -- power <<= 1
-                power = bit.blshift(power, 1)
+                power = blshift(power, 1)
             end
 
             dictionary[dictSize] = utf8.encode_args(bits)
@@ -210,10 +209,10 @@ function decompress(compressed)
 
             while power ~= maxpower do
                 -- resb = data_val & data_position
-                resb = bit.band(data_val, data_position)
+                resb = band(data_val, data_position)
 
                 -- data_position >>= 1
-                data_position = bit.blogic_rshift(data_position, 1)
+                data_position = brshift(data_position, 1)
 
                 if data_position == 0 then
                     data_position = 32768
@@ -225,10 +224,10 @@ function decompress(compressed)
                 else
                     resb_bor = 0 * power
                 end
-                bits = bit.bor(bits, resb_bor)
+                bits = bor(bits, resb_bor)
 
                 -- power <<= 1
-                power = bit.blshift(power, 1)
+                power = blshift(power, 1)
             end
 
             dictionary[dictSize] = utf8.encode_args(bits)
@@ -309,40 +308,40 @@ function decompresFromBase64(iinput)
         index = index + 1
 
         -- chr1 = (enc1 << 2) | (enc2 >> 4)
-        chr1 = bit.bor(
-            bit.blshift(enc1, 2),
-            bit.blogic_rshift(enc2, 4)
+        chr1 = bor(
+            blshift(enc1, 2),
+            brshift(enc2, 4)
         )
         -- chr2 = ((enc2 & 15) << 4) | (enc3 >> 2)
-        chr2 = bit.bor(
-            bit.blshift(bit.band(enc2, 15), 4),
-            bit.blogic_rshift(enc3, 2)
+        chr2 = bor(
+            blshift(band(enc2, 15), 4),
+            brshift(enc3, 2)
         )
         -- chr3 = ((enc3 & 3) << 6) | enc4
-        chr3 = bit.bor(
-            bit.blshift(bit.band(enc3, 3), 6),
+        chr3 = bor(
+            blshift(band(enc3, 3), 6),
             enc4)
 
         if mod(ol, 2) == 0 then
             -- output_ = chr1 << 8
-            output_ = bit.blshift(chr1, 8)
+            output_ = blshift(chr1, 8)
 
             if enc3 ~= 64 then -- output += six.unichr(output_ | chr2)
-                output = output .. utf8.encode_args(bit.bor(output_, chr2))
+                output = output .. utf8.encode_args(bor(output_, chr2))
             end
             if enc4 ~= 64 then -- output_ = chr3 << 8
-                output_ = bit.blshift(chr3, 8)
+                output_ = blshift(chr3, 8)
             end
         else
             -- output = output + six.unichr(output_ | chr1)
-            output = output .. utf8.encode_args(bit.bor(output_, chr1))
+            output = output .. utf8.encode_args(bor(output_, chr1))
 
             if enc3 ~= 64 then -- output_ = chr2 << 8
-                output_ = bit.blshift(chr2, 8)
+                output_ = blshift(chr2, 8)
             end
 
             if enc4 ~= 64 then -- output += six.unichr(output_ | chr3)
-                output = output .. utf8.encode_args(bit.bor(output_, chr3))
+                output = output .. utf8.encode_args(bor(output_, chr3))
             end
         end
         ol = ol + 3
